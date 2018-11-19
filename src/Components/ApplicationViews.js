@@ -7,41 +7,29 @@ import OwnerList from './OwnerList/OwnerList'
 
 class ApplicationViews extends Component {
 
-locationsFromAPI = [
-  {id: 1, name: "Nashville North", address: "500 Circle Way"},
-  {id: 2, name: "Nashville South", address: "10101 Binary Court"}
-]
-
-employeesFromAPI = [
-{id: 1, name: "Jessica Younker"},
-{id: 2, name: "Jordan Nelson"},
-{id: 3, name: "Zoe LeBlanc"},
-{id: 4, name: "Blaise Roberts"}
-]
-
-animalsAPI = [
-{id: 1, name: "Fartbarf"},
-{id: 2, name: "Clinton"},
-{id: 3, name: "Karate Guy"},
-{id: 4, name: "Chainsaw"},
-{id: 5, name: "Sgt. Pepper"},
-{id: 6, name: "Dan Schneider"}
-]
-
-ownersAPI = [
-{id: 1, name: "Carl Malone", phoneNumber: 882-452-9932},
-{id: 2, name: "Kevin Tarantula", phoneNumber: 827-268-8521},
-{id: 3, name: "Emily Dickinson", phoneNumber: 1-800-337-737-7733},
-{id: 4, name: "Bobby Flay", phoneNumber: 266-533-6387},
-{id: 5, name: "Micky Dolenz", phoneNumber: 123-456-7890},
-{id: 6, name: "Jackie Chan", phoneNUmber: 198-765-4321}
-]
-
 state = {
-  employees: this.employeesFromAPI,
-  locations: this.locationsFromAPI,
-  animals: this.animalsAPI,
-  owners: this.ownersAPI
+  employees: [],
+  locations: [],
+  animals: [],
+  owners: []
+}
+
+componentDidMount() {
+  const newState = {}
+
+  fetch("http://localhost:5002/animals")
+      .then(r => r.json())
+      .then(animals => newState.animals = animals)
+      .then(() => fetch("http://localhost:5002/employees")
+      .then(r => r.json()))
+      .then(employees => newState.employees = employees)
+      .then(() => fetch("http://localhost:5002/locations")
+      .then(r => r.json()))
+      .then(locations => newState.locations = locations)
+      .then(() => fetch("http://localhost:5002/owners")
+      .then(r => r.json()))
+      .then(owners => newState.owners = owners)
+      .then(() => this.setState(newState))
 }
 
 render() {
